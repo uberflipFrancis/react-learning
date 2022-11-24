@@ -1,4 +1,4 @@
-# React Projects
+# React Router 6
 
 #### React Course
 
@@ -6,63 +6,490 @@
 
 #### Support
 
-Find the Content Useful? [You can always buy me a coffee](https://www.buymeacoffee.com/johnsmilga)
+Find the App Useful? [You can always buy me a coffee](https://www.buymeacoffee.com/johnsmilga)
 
-#### Tutorial Video
+#### Run Complete Project
 
-[React Tutorial](https://youtu.be/iZhV0bILFb0)
+- index.js
 
-#### All Projects
+```js
+// import App from './App';
+import App from './final/App';
+```
 
-[Projects Site](https://react-projects.netlify.app/)
+#### Docs
 
-## Corresponding Tutorial Topics
+[React Router Docs](https://reactrouter.com/docs/en/v6/getting-started/overview)
 
-#### useState
+#### Install
 
-1. Birthday Reminder
+```sh
+npm install react-router-dom@6
+```
 
-#### useEffect and Conditional Rendering
+#### First Pages
 
-2. Tours
-3. Reviews
-4. Questions
-5. Menu
-6. Tabs
-7. Slider
+- App.js
 
-#### Forms
+```js
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-8. Lorem Ipsum Generator
-9. Color Shades Generator
-10. Grocery Bud
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<div>home page</div>} />
+        <Route
+          path='testing'
+          element={
+            <div>
+              <h2>testing </h2>
+            </div>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
-#### useRef
+export default App;
+```
 
-11. Navbar
+#### Components
 
-#### useContext
+- App.js
 
-12. Modal And Sidebar
-13. Stripe Submenus
+```js
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Products from './pages/Products';
 
-#### useReducer and useContext
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='about' element={<About />} />
+        <Route path='products' element={<Products />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
-14. Cart
+export default App;
+```
 
-#### React Router and useCallback
+#### Links
 
-15. Cocktails
+- Home.js, About.js
 
-## Advanced Projects (Course Exclusive)
+```js
+import { Link } from 'react-router-dom';
 
-[My React Course](https://www.udemy.com/course/react-tutorial-and-projects-course/?referralCode=FEE6A921AF07E2563CEF)
+const Home = () => {
+  return (
+    <div>
+      <h2>Home Page</h2>
+      <Link to='/about' className='btn'>
+        About
+      </Link>
+      <a href="">
+    </div>
+  );
+};
+export default Home;
+```
 
-16. Markdown Preview
-17. Random Person
-18. Pagination
-19. Stock Photos
-20. Dark Mode
-21. Movie DB
-22. Hacker News
-23. Quiz
+#### Error Page
+
+- App.js
+
+```js
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='about' element={<About />} />
+        <Route path='products' element={<Products />} />
+        <Route path='*' element={<Error />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+- Error.js
+
+```js
+import { Link } from 'react-router-dom';
+
+const Error = () => {
+  return (
+    <section className='section'>
+      <h2>404</h2>
+      <p>page not found</p>
+      <Link to='/'>back home</Link>
+    </section>
+  );
+};
+export default Error;
+```
+
+#### Nested Pages
+
+- will refactor few times
+
+- App.js
+
+```js
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />}>
+          <Route path='about' element={<About />} />
+          <Route path='products' element={<Products />} />
+          <Route path='*' element={<Error />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+#### Shared Layout
+
+- Home.js
+
+```js
+import { Link, Outlet } from 'react-router-dom';
+
+const Home = () => {
+  return (
+    <section className='section'>
+      <h2>Home Page</h2>
+      <Outlet />
+    </section>
+  );
+};
+export default Home;
+```
+
+#### Navbar
+
+- Navbar.js
+
+```js
+import { Link } from 'react-router-dom';
+
+const Navbar = () => {
+  return (
+    <nav className='navbar'>
+      <Link to='/'>Home</Link>
+      <Link to='/about'>About</Link>
+      <Link to='/products'>Products</Link>
+    </nav>
+  );
+};
+export default Navbar;
+```
+
+- Home.js
+
+```js
+import { Link, Outlet } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+const Home = () => {
+  return (
+    <>
+      <Navbar />
+      <section className='section'>
+        <Outlet />
+      </section>
+    </>
+  );
+};
+export default Home;
+```
+
+#### Index Routes
+
+- Index routes render in the parent routes outlet at the parent route's path.
+- Index routes match when a parent route matches but none of the other children match.
+- Index routes are the default child route for a parent route.
+- Index routes render when the user hasn't clicked one of the items in a navigation list yet.
+
+- copy Home.js content
+- SharedLayout.js
+
+```js
+import { Link, Outlet } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+const SharedLayout = () => {
+  return (
+    <>
+      <Navbar />
+      <section className='section'>
+        <Outlet />
+      </section>
+    </>
+  );
+};
+export default SharedLayout;
+```
+
+- Home.js
+
+```js
+const Home = () => {
+  return (
+    <section className='section'>
+      <h2>Home Page</h2>
+    </section>
+  );
+};
+export default Home;
+```
+
+- App.js
+
+```js
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path='about' element={<About />} />
+          <Route path='products' element={<Products />} />
+          <Route path='*' element={<Error />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+#### NavLink (style)
+
+- StyledNavbar.js
+
+```js
+import { NavLink } from 'react-router-dom';
+
+<nav className='navbar'>
+  <NavLink
+    to='/about'
+    style={({ isActive }) => {
+      return { color: isActive ? 'red' : 'grey' };
+    }}
+  >
+    Home
+  </NavLink>
+</nav>;
+```
+
+#### NavLink (className)
+
+- StyledNavbar.js
+
+```js
+<nav className='navbar'>
+  <NavLink
+    to='/'
+    className={({ isActive }) => (isActive ? 'link active' : 'link')}
+  >
+    Home
+  </NavLink>
+</nav>
+```
+
+#### Reading URL Params
+
+- App.js
+
+```js
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path='about' element={<About />} />
+          <Route path='products' element={<Products />} />
+          <Route path='products/:productId' element={<SingleProduct />} />
+          <Route path='*' element={<Error />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+#### Single Product
+
+- SingleProduct.js
+
+```js
+import { Link, useParams } from 'react-router-dom';
+import products from '../data';
+const SingleProduct = () => {
+  const { productId } = useParams();
+
+  return (
+    <section className='section product'>
+      <h2>{productId}</h2>
+      <Link to='/products'>back to products</Link>
+    </section>
+  );
+};
+
+export default SingleProduct;
+```
+
+#### Products Page
+
+- Products.js
+
+```js
+import { Link } from 'react-router-dom';
+import products from '../data';
+const Products = () => {
+  return (
+    <section className='section'>
+      <h2>products</h2>
+      <div className='products'>
+        {products.map((product) => {
+          return (
+            <article key={product.id}>
+              <h5>{product.name}</h5>
+              <Link to={`/products/${product.id}`}>more info</Link>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
+
+export default Products;
+```
+
+#### Single Product
+
+- SingleProduct.js
+
+```js
+import { Link, useParams } from 'react-router-dom';
+import products from '../data';
+const SingleProduct = () => {
+  const { productId } = useParams();
+  const product = products.find((product) => product.id === productId);
+  const { image, name } = product;
+
+  return (
+    <section className='section product'>
+      <img src={image} alt={name} />
+      <h5>{name}</h5>
+      <Link to='/products'>back to products</Link>
+    </section>
+  );
+};
+
+export default SingleProduct;
+```
+
+#### useNavigate()
+
+[ (?.) or Optional Chaining Explained](https://youtu.be/PuEGrylM1x8)
+
+- App.js
+
+```js
+function App() {
+  const [user, setUser] = useState(null);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path='about' element={<About />} />
+          <Route path='products' element={<Products />} />
+          <Route path='products/:productId' element={<SingleProduct />} />
+          <Route path='login' element={<Login setUser={setUser} />} />
+          <Route path='dashboard' element={<Dashboard user={user} />} />
+          <Route path='*' element={<Error />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+- Login.js
+
+```js
+ import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+const Login = ({ setUser }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name || !email) return;
+    setUser({ name: name, email: email });
+    navigate('/dashboard');
+  };
+
+```
+
+[ (?.) or Optional Chaining Explained](https://youtu.be/PuEGrylM1x8)
+
+- Dashboard.js
+
+```js
+const Dashboard = ({ user }) => {
+  return (
+    <section className='section'>
+      <h4>Hello, {user?.name}</h4>
+    </section>
+  );
+};
+export default Dashboard;
+```
+
+#### Protected Route
+
+- App.js
+
+```js
+<Route
+  path='dashboard'
+  element={
+    <ProtectedRoute user={user}>
+      <Dashboard user={user} />
+    </ProtectedRoute>
+  }
+/>
+```
+
+- ProtectedRoute.js
+
+```js
+import { Navigate } from 'react-router-dom';
+
+const ProtectedRoute = ({ children, user }) => {
+  if (!user) {
+    return <Navigate to='/' />;
+  }
+  return children;
+};
+
+export default ProtectedRoute;
+```
