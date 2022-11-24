@@ -1,4 +1,4 @@
-# React Projects
+# Axios Tutorial
 
 #### React Course
 
@@ -6,63 +6,140 @@
 
 #### Support
 
-Find the Content Useful? [You can always buy me a coffee](https://www.buymeacoffee.com/johnsmilga)
+Find the App Useful? [You can always buy me a coffee](https://www.buymeacoffee.com/johnsmilga)
 
-#### Tutorial Video
+#### Docs
 
-[React Tutorial](https://youtu.be/iZhV0bILFb0)
+[Axios Docs](https://axios-http.com/docs/intro)
 
-#### All Projects
+#### Install
 
-[Projects Site](https://react-projects.netlify.app/)
+```sh
+npm install axios
+```
 
-## Corresponding Tutorial Topics
+```js
+<script src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js'></script>
+```
 
-#### useState
+#### First Request
 
-1. Birthday Reminder
+- import axios
 
-#### useEffect and Conditional Rendering
+- axios.get(url)
+- axios.post(url)
+- axios.patch/put(url)
+- axios.delete(ulr)
 
-2. Tours
-3. Reviews
-4. Questions
-5. Menu
-6. Tabs
-7. Slider
+- default get axios(url)
 
-#### Forms
+- returns a promise
+- response data located in data property
+- error in error.response
 
-8. Lorem Ipsum Generator
-9. Color Shades Generator
-10. Grocery Bud
+```js
+import axios from 'axios';
 
-#### useRef
+const fetchData = async () => {
+  try {
+    // axios.get(), axios.post(),axios.put(), axios.delete()
+    const response = await axios(url);
 
-11. Navbar
+    console.log(response);
+  } catch (error) {
+    console.log(error.response);
+  }
+};
+```
 
-#### useContext
+#### Headers
 
-12. Modal And Sidebar
-13. Stripe Submenus
+- second argument
+- axios.get(url,{})
 
-#### useReducer and useContext
+- third argument in requests with data
+- axios.post(url,{data},{})
 
-14. Cart
+```js
+const fetchDadJoke = async () => {
+  try {
+    const { data } = await axios(url, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+    // console.log(data);
+    setJoke(data.joke);
+  } catch (error) {
+    console.log(error.response);
+  }
+};
+```
 
-#### React Router and useCallback
+#### Post Request
 
-15. Cocktails
+- send data to the server
+- axios.post(url, { data })
+- more options (auth header) - axios.post(url, { data },{})
 
-## Advanced Projects (Course Exclusive)
+```js
+try {
+  const resp = await axios.post(url, { data });
+} catch (error) {
+  console.log(error.response.data);
+}
+```
 
-[My React Course](https://www.udemy.com/course/react-tutorial-and-projects-course/?referralCode=FEE6A921AF07E2563CEF)
+#### Global Defaults
 
-16. Markdown Preview
-17. Random Person
-18. Pagination
-19. Stock Photos
-20. Dark Mode
-21. Movie DB
-22. Hacker News
-23. Quiz
+```js
+axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.baseURL = 'https://api.example.com';
+axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.post['Content-Type'] =
+  'application/x-www-form-urlencoded';
+```
+
+#### Custom Instance
+
+```js
+const authFetch = axios.create({
+  baseURL: 'https://course-api.com',
+  headers: {
+    Accept: 'application/json',
+  },
+});
+```
+
+#### Interceptors
+
+- global and custom
+
+```js
+authFetch.interceptors.request.use(
+  (request) => {
+    request.headers.common['Accept'] = `application/json`;
+    console.log('request sent');
+    // must return request
+    return request;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+authFetch.interceptors.response.use(
+  (response) => {
+    console.log('got response');
+    return response;
+  },
+  (error) => {
+    console.log(error.response);
+    if (error.response.status === 404) {
+      // do something
+      console.log('NOT FOUND');
+    }
+    return Promise.reject(error);
+  }
+);
+```
